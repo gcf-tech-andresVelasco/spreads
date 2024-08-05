@@ -1,0 +1,15 @@
+version: '1'
+
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - TOKEN=${TOKEN}
+      - ACCOUNT_ID=${ACCOUNT_ID}
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - redis
+  redis:
+    image: redis:latest
