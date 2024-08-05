@@ -63,7 +63,6 @@ async function getSpread() {
         await redisClient.set("bid1", bid1.toString());
         await redisClient.set("ask1", ask1.toString());
         await redisClient.set("spread1", spread.toString());
-        console.log(`Symbol ${symbol1} - Bid: ${bid1}, Ask: ${ask1}, Spread: ${spread}`);
       } else {
         console.log(`No quotes received for symbol ${symbol1}`);
       }
