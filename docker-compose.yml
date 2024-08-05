@@ -2,14 +2,21 @@ version: '1'
 
 services:
   app:
-    build: .
+    build: /espressServer
     ports:
       - "3000:3000"
     environment:
       - TOKEN=${TOKEN}
       - ACCOUNT_ID=${ACCOUNT_ID}
       - REDIS_URL=redis://redis:6379
+    networks:
+      - default
     depends_on:
       - redis
   redis:
     image: redis:latest
+    networks:
+      - default
+networks:
+  default:
+    driver: bridge
