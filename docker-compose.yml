@@ -2,6 +2,7 @@ version: '1'
 
 services:
   express_app:
+    container_name: node_spreads
     build:
       context: ./expressServer
     ports:
