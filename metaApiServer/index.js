@@ -54,11 +54,13 @@ async function getSpread() {
       const quote2 = await connection.getSymbolPrice(symbol2);
       const quote3 = await connection.getSymbolPrice(symbol3);
       const quote4 = await connection.getSymbolPrice(symbol4);
-
+      console.log(quote1);
       if (quote1) {
         const bid1 = quote1.bid;
         const ask1 = quote1.ask;
         const spread = ask1 - bid1;
+
+        console.log(`Symbol: ${symbol1}, Bid: ${bid1}, Ask: ${ask1}, Spread: ${spread}`);
 
         await redisClient.set("bid1", bid1.toString());
         await redisClient.set("ask1", ask1.toString());
