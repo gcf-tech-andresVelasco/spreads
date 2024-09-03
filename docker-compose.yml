@@ -18,6 +18,7 @@ services:
     image: redis:latest
     networks:
       - vps2DockerNet
+    restart: always
 networks:
   vps2DockerNet:
     external: true
