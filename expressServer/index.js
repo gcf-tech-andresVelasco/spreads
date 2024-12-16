@@ -1,9 +1,11 @@
 const express = require("express");
 var cors = require('cors');
 const { createClient } = require("redis");
+const fxRoutes = require('./routes/fxRoutes');
 require("dotenv").config();
 
 let redisClient;
+module.exports = redisClient;
 
 async function redisConnect() {
   redisClient = createClient({
@@ -13,7 +15,7 @@ async function redisConnect() {
   await redisClient.connect();
 
   await redisClient.set("key", "me funciono");
-  const value = await redisClient.get("key");
+  const value = await redisClient.get("key");                
   console.log(value);
 }
 
@@ -64,6 +66,8 @@ app.post("/spread", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+app.use('/fx', fxRoutes);
 
 (async () => {
   await redisConnect();

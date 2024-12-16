@@ -1,0 +1,40 @@
+const redisClient = require('../index').redisClient;
+
+class FxDataController {
+  static async setData(req, res) {
+    try {
+      const usersInfo = req.body;
+
+      for (const userInfo in usersInfo) {
+        let prevData = await redisClient.get(userInfo);
+        let formatedData = JSON.parse(prevData);
+        const {balance, profit, equity} = usersInfo[userInfo];       
+        if (prevData) {
+          formatedData = {
+            ...formatedData,
+            balance: balance,
+            profit: profit,
+            equity: equity
+          }    
+        } else {
+          prevData = { balance, profit, equity };
+        }
+      }
+
+      res.status(200).json({ message: 'Data saved successfully' });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  }
+  static async getOneUserData(req, res) {
+    try {
+      const userId = req.params.userId;
+      const userData = await redisClient.get(userId);
+      res.json(userData);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  }   
+}
+
+module.exports = { FxDataController };
