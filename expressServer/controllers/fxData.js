@@ -1,4 +1,4 @@
-const redisClient = require('../index').redisClient;
+const { redisClient } = require("../redisClient");
 
 class FxDataController {
   static async setData(req, res) {
@@ -16,14 +16,16 @@ class FxDataController {
             profit: profit,
             equity: equity
           }    
+          await redisClient.set(userInfo, JSON.stringify(formatedData));
         } else {
-          prevData = { balance, profit, equity };
+          formatedData = { balance, profit, equity };
+          await redisClient.set(userInfo, JSON.stringify(formatedData));
         }
       }
 
       res.status(200).json({ message: 'Data saved successfully' });
     } catch (err) {
-      res.status(500).json({ error: err.message });
+      res.status(500).json({error: err.message });
     }
   }
   static async getOneUserData(req, res) {

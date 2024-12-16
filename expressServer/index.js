@@ -1,23 +1,7 @@
 const express = require("express");
 var cors = require('cors');
-const { createClient } = require("redis");
+const { redisClient, connectRedis } = require("./redisClient");
 const fxRoutes = require('./routes/fxRoutes');
-require("dotenv").config();
-
-let redisClient;
-module.exports = redisClient;
-
-async function redisConnect() {
-  redisClient = createClient({
-    url: process.env.REDIS_URL || "redis://localhost:6379",
-  }).on("error", (err) => console.log("Redis Client Error", err));
-
-  await redisClient.connect();
-
-  await redisClient.set("key", "me funciono");
-  const value = await redisClient.get("key");                
-  console.log(value);
-}
 
 const app = express();
 const port = 3000;
@@ -70,7 +54,7 @@ app.post("/spread", async (req, res) => {
 app.use('/fx', fxRoutes);
 
 (async () => {
-  await redisConnect();
+  await connectRedis();
 
   app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
