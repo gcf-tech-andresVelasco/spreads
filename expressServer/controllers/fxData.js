@@ -16,7 +16,9 @@ class FxDataController {
             profitMonthly: profitMonthly,
             balance: balance,
             profit: profit,
-            equity: equity
+            equity: equity,
+            margin: margin,
+            MarginFree: marginFree,
           }    
           await redisClient.set(userInfo, JSON.stringify(formatedData));
         } else {
