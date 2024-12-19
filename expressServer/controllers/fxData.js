@@ -8,7 +8,7 @@ class FxDataController {
       for (const userInfo in usersInfo) {
         let prevData = await redisClient.get(userInfo);
         let formatedData = JSON.parse(prevData);
-        const {balance, profit, equity, profitMonthly, balanceMonthly} = usersInfo[userInfo];       
+        const {balance, profit, equity, profitMonthly, balanceMonthly, margin, marginFree} = usersInfo[userInfo];       
         if (prevData) {
           formatedData = {
             ...formatedData,
