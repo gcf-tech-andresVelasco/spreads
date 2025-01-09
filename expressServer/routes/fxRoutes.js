@@ -5,5 +5,7 @@ const fxRoutes = Router();
 
 fxRoutes.get("/:userId",FxDataController.getOneUserData);
 fxRoutes.post("/", FxDataController.setData);
+fxRoutes.patch("/", FxDataController.updateData);
+
 
 module.exports = fxRoutes;

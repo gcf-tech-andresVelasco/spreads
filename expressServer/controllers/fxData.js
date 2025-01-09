@@ -40,7 +40,48 @@ class FxDataController {
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
-  }   
+  }
+  static async updateData(req, res) {
+    try {
+        const usersInfo = req.body;
+
+        for (const userInfo in usersInfo) {
+            // Retrieve previous data from Redis
+            let prevData = await redisClient.get(userInfo);
+            let formatedData = prevData ? JSON.parse(prevData) : {};
+
+            // Extract optional fields from the request
+            const {
+                balance,
+                profit,
+                equity,
+                profitMonthly,
+                balanceMonthly,
+                margin,
+                marginFree,
+                returnMonthly,
+            } = usersInfo[userInfo];
+            console.log(returnMonthly)
+            // Update only the provided fields
+            if (balance !== undefined) formatedData.balance = balance;
+            if (profit !== undefined) formatedData.profit = profit;
+            if (equity !== undefined) formatedData.equity = equity;
+            if (profitMonthly !== undefined) formatedData.profitMonthly = profitMonthly;
+            if (balanceMonthly !== undefined) formatedData.balanceMonthly = balanceMonthly;
+            if (margin !== undefined) formatedData.margin = margin;
+            if (marginFree !== undefined) formatedData.marginFree = marginFree;
+            if (returnMonthly !== undefined) formatedData.returnMonthly = returnMonthly;
+
+
+            // Save updated data back to Redis
+            await redisClient.set(userInfo, JSON.stringify(formatedData));
+        }
+
+        res.status(200).json({ message: 'Data updated successfully' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+}
 }
 
 module.exports = { FxDataController };
